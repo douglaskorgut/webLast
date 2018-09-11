@@ -19,6 +19,7 @@ export class PublicacoesComponent implements OnInit {
       this.email = user.email
 
       this.atualizarTimeLine()
+      console.log("sup")
     })
   }
 
