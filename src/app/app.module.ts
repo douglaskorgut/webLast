@@ -71,6 +71,8 @@ import { StreamingComponent } from './streaming/streaming.component';
 import { MenuComponent } from './menu/menu.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { VideoComponentComponent } from './video-component/video-component.component';
+import { PublicacoesPerfilComponent } from './perfil/publicacoes-perfil/publicacoes-perfil.component';
+import { IncluirPerfilPublicacaoComponent } from './perfil/incluir-perfil-publicacao/incluir-perfil-publicacao.component';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'iot.eclipse.org',
@@ -93,7 +95,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     StreamingComponent,
     NavcompComponent,
     MenuComponent,
-    PerfilComponent
+    PerfilComponent,
+    PublicacoesPerfilComponent,
+    IncluirPerfilPublicacaoComponent
   ],
   imports: [
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild} from '@angular/core';
+import {Autenticacao} from '../autenticacao.service'
 
 @Component({
   selector: 'app-perfil',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PerfilComponent implements OnInit {
 
-  constructor() { }
+  private _opened: boolean = false;
+  events: string[] = [];
+  opened: boolean;
+  @ViewChild('publicacoes-perfil') public publicacoesPerfil: any
+
+  constructor(private autenticacao: Autenticacao) { }
 
   ngOnInit() {
   }
+  public sair(): void {
+    this.autenticacao.sair()
+  }
+
+  public atualizarTimeLine(): void { 
+    console.log("hererere")
+    this.publicacoesPerfil.atualizarTimeLine()
+  }
+
 
 }

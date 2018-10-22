@@ -1,0 +1,25 @@
+.navbar {
+    height: 77px;
+    padding: 26px 40px;
+    width: 100%;
+    border-bottom: solid 1px #E6E6E6;
+}
+
+.logo {
+    background-image: url('/assets/logo.png');
+    width: 165px;
+    height: 70px;
+    float: left;
+    background-repeat: no-repeat
+}
+
+.add-post {
+    background-image: url('/assets/camera.png');
+    width: 32px;
+    height: 32px;
+    float: left;
+}
+.button{
+    border: solid 1px #E6E6E6;
+    margin-left: 50px;
+}
