@@ -3,3 +3,11 @@
 body{
     background: #FAFAFA
 }
+
+.ng-sidebar {
+    background: #FAFAFA !important;
+    margin-top: 5%;
+    width: 200px;
+
+    
+}

@@ -50,6 +50,7 @@ export class IncluirPublicacaoComponent implements OnInit {
       if(this.progresso.status === 'concluido') {
         acompanhamentoUpload.unsubscribe()
         this.progressoPublicacao = 'concluido'
+        
         this.atualizarTimeLine.emit()
         continua.next(false)
 

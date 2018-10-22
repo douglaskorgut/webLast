@@ -1,7 +1,8 @@
 .card-title {
-    background-image: url("/assets/logo-instagram.png");
+    background-image: url("/assets/logo.png");
     background-position: center;
     background-repeat: no-repeat;
-    height: 60px;
+    height: 100px;
     width: 100%;
+   
 }

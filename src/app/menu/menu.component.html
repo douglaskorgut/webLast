@@ -1,0 +1,28 @@
+ <!-- Container for sidebar(s) + page content -->
+ <ng-sidebar-container  >
+ 
+    <!-- A sidebar -->
+    <ng-sidebar   [autoFocus]=false id="menu" [(opened)]="_opened" position='left' mode="slide" animate="true" >
+      <ul >
+        <li>
+          <a  routerLink="/perfil" routerLinkActive="active" >Perfil</a>
+        </li>
+        <li>
+            <a  routerLink="/home" routerLinkActive="active" >Imagens</a>
+        </li>
+        <li>
+            <a  routerLink="/video" routerLinkActive="active" >Video</a>
+        </li>
+        <li>
+            <a  routerLink="/streaming" routerLinkActive="active">Streaming</a>
+        </li>
+      </ul>
+    </ng-sidebar>
+
+    <!-- Page content -->
+    <div ng-sidebar-content>
+      <button   class="btn btn-primary btn-circle btn-lg justify-content-center" style="margin-left: 45%;margin-top: 4%"   (click)="_toggleSidebar()"><i class="fa fa-list"></i></button>
+      <router-outlet></router-outlet>
+    </div>
+
+  </ng-sidebar-container>

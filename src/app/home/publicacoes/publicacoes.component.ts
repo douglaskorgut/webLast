@@ -17,11 +17,11 @@ export class PublicacoesComponent implements OnInit {
   ngOnInit() {
     firebase.auth().onAuthStateChanged((user)=>{
       this.email = user.email
-
       this.atualizarTimeLine()
-      console.log("sup")
+
     })
   }
+
 
   public atualizarTimeLine(): void {
     this.bd.consultaPublicacoes(this.email)
