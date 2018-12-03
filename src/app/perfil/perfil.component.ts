@@ -22,7 +22,7 @@ export class PerfilComponent implements OnInit {
   }
 
   public atualizarTimeLine(): void { 
-    console.log("hererere")
+
     this.publicacoesPerfil.atualizarTimeLine()
   }
 

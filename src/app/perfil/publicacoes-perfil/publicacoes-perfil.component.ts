@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Bd} from '../../bd.service'
+import { Bd } from '../../bd.service'; 
 import * as firebase from 'firebase'
-import {DomSanitizer} from '@angular/platform-browser'
+
 
 @Component({
   selector: 'app-publicacoes-perfil',
@@ -9,34 +9,25 @@ import {DomSanitizer} from '@angular/platform-browser'
   styleUrls: ['./publicacoes-perfil.component.css']
 })
 export class PublicacoesPerfilComponent implements OnInit {
-
-  private email: string
+  
+  public email: string
   public publicacoes: any
-
-  constructor(private bd: Bd, public sanitizer: DomSanitizer) { }
-
-
+  constructor( private bd: Bd ) { }
 
   ngOnInit() {
-
     firebase.auth().onAuthStateChanged((user)=>{
       this.email = user.email
-      
-      
       this.atualizarTimeLine()
-     
-    
- 
- 
-     })
+
+    })
   }
 
-  public atualizarTimeLine():void{
+
+  public atualizarTimeLine(): void {
     this.bd.consultaPerfilPublicacoes(this.email)
     .then( (publicacoes:any) =>{
       this.publicacoes = publicacoes
-      
-    
+      console.log(publicacoes.url_imagem)
     } )
   }
 

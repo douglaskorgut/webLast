@@ -92,6 +92,10 @@ export class StreamingComponent implements OnInit {
     }
   }
 
+  public sair(): void {
+    this.autenticacao.sair()
+  }
+
   public publishEmail(email:string): void{
     this._mqttService.publish("email",email).subscribe({
       next: () => {

@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './incluir-perfil-publicacao.component.html',
   styleUrls: ['./incluir-perfil-publicacao.component.css']
 })
+
 export class IncluirPerfilPublicacaoComponent implements OnInit {
 
   public email: string
