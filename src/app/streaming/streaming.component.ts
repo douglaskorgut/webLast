@@ -32,7 +32,7 @@ export class StreamingComponent implements OnInit {
     if ( this.recordVideo == false ) {
       this.recordVideo = true
       console.log("Record video = true")
-      this._mqttService.publish("video/record","true").subscribe({
+      this._mqttService.publish("/video/record","true").subscribe({
         next: () => {
             console.log("Video published")
         },
@@ -43,7 +43,7 @@ export class StreamingComponent implements OnInit {
     } else {
       this.recordVideo = false
       console.log("Record video = false")
-      this._mqttService.publish("video/record","false").subscribe({
+      this._mqttService.publish("/video/record","false").subscribe({
         next: () => {
             console.log("Video published")
         },
@@ -56,7 +56,7 @@ export class StreamingComponent implements OnInit {
 
 
   public takePicture():void{
-    this._mqttService.publish("image/record","true").subscribe({
+    this._mqttService.publish("/image/record","true").subscribe({
       next: () => {
           console.log("Image published")
       },

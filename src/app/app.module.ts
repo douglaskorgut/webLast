@@ -75,8 +75,8 @@ import { PublicacoesPerfilComponent } from './perfil/publicacoes-perfil/publicac
 import { IncluirPerfilPublicacaoComponent } from './perfil/incluir-perfil-publicacao/incluir-perfil-publicacao.component';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: 'iot.eclipse.org',
-  port: 80,
+  hostname: 'test.mosquitto.org',
+  port: 8080,
   path: '/ws'
 };
 
