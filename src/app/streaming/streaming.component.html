@@ -12,8 +12,13 @@
   </app-menu>
   <div class="container"  style="margin-top: -410px" >
   <iframe style="width:640px; height: 480px; margin-left: 21%;" src="http://192.168.25.10:5000"></iframe>
-  </div>    
-  
+  </div>
+  <p style="margin-left: 50%">Posição em x: </p>    
+  <ng5-slider (valueChange)="onXValueChange($event)"  [(value)]="xValue" [options]="xOptions"></ng5-slider>
+  <p style="margin-left: 50%;padding-top: 1%">Posição em y: </p> 
+  <ng5-slider (valueChange)="onYValueChange($event)"  [(value)]="yValue" [options]="yOptions"></ng5-slider>
+  <div style="padding-top:5%">
   <button  style="width: 50%;padding-botton: 100%;margin-left: 25%" type="button" class="btn btn-primary btn-lg btn-block" (click)="changeButtonState()" >  {{ recordVideo == true ? 'Gravando' : 'Gravar video' }}</button>
   <button  style="width: 50%;padding-botton: 100%;margin-left: 25%" type="button" class="btn btn-primary btn-lg btn-block" (click)="takePicture()" >  Tirar foto  </button>
   <button  style="width: 50%;padding-botton: 100%;margin-left: 25%" type="button" class="btn btn-primary btn-lg btn-block" (click)="changeStreamingState()" >  {{ enableStreaming == true ? 'Streaming ativado' : 'Streaming desativado' }}</button>
+  </div>

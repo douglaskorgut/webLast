@@ -10,6 +10,7 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
 import { SidebarModule } from 'ng-sidebar';
 import { Observable } from 'rxjs';
+import { ContextMenuModule } from '@progress/kendo-angular-menu';
 import {
   IMqttMessage,
   MqttModule,
@@ -73,9 +74,13 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { VideoComponentComponent } from './video-component/video-component.component';
 import { PublicacoesPerfilComponent } from './perfil/publicacoes-perfil/publicacoes-perfil.component';
 import { IncluirPerfilPublicacaoComponent } from './perfil/incluir-perfil-publicacao/incluir-perfil-publicacao.component';
+import { Ng5SliderModule } from 'ng5-slider';
+import { MenuModule } from '@progress/kendo-angular-menu';
+
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'test.mosquitto.org',
+  protocol:'ws',
   port: 8080,
   path: '/ws'
 };
@@ -97,13 +102,15 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MenuComponent,
     PerfilComponent,
     PublicacoesPerfilComponent,
-    IncluirPerfilPublicacaoComponent
+    IncluirPerfilPublicacaoComponent,
   ],
   imports: [
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     SidebarModule.forRoot(),
+    ContextMenuModule,
     MatAutocompleteModule,
     MatBadgeModule,
+    Ng5SliderModule,
     MatBottomSheetModule,
     MatButtonModule,
     MatButtonToggleModule,
@@ -143,7 +150,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MatNativeDateModule,
     ReactiveFormsModule,
 
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+
+    MenuModule
   ],
   providers: [ Autenticacao, AutenticacaoGuard, Bd, Progresso, Mqtt ],
   bootstrap: [AppComponent]

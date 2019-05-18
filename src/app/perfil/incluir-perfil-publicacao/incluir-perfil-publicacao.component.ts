@@ -20,11 +20,14 @@ export class IncluirPerfilPublicacaoComponent implements OnInit {
   public imagem: any
   public progressoPublicacao: string = 'pendente'
   public porcentagemUpload: number
+  public bdMessage: string = ""
   @Output() public atualizarTimeLine: EventEmitter<any> = new EventEmitter<any>()
 
   public formulario: FormGroup = new FormGroup({
-    'titulo' : new FormControl(null)
+    'titulo' : new FormControl(null),
+    'id'     : new FormControl(null)
   })
+
   constructor(private bd: Bd,private progresso: Progresso) { }
 
   
@@ -35,10 +38,12 @@ export class IncluirPerfilPublicacaoComponent implements OnInit {
   }
 
   public publicar(): void {
-    this.bd.publicarPerfil({
+    
+    this.bd.publicarBuffer({
       email: this.email ,
       titulo: this.formulario.value.titulo,
-      imagem: this.imagem[0]
+      imagem: this.imagem[0],
+      id: this.formulario.value.id
     })
     let continua = new Subject()
     continua.next(true)
@@ -48,15 +53,25 @@ export class IncluirPerfilPublicacaoComponent implements OnInit {
      // console.log(this.progresso.estado)
       this.progressoPublicacao = 'andamento'
       this.porcentagemUpload = Math.round((this.progresso.estado.bytesTransferred/this.progresso.estado.totalBytes)*100)
+      
       if(this.progresso.status === 'concluido') {
         acompanhamentoUpload.unsubscribe()
         this.progressoPublicacao = 'concluido'
-        
         this.atualizarTimeLine.emit()
         continua.next(false)
 
       }
     })
+
+    this.bd.publicarPerfil({
+      email: this.email ,
+      titulo: this.formulario.value.titulo,
+      imagem: this.imagem[0],
+      id: this.formulario.value.id
+    })
+    this.atualizarTimeLine.emit()
+
+    
     
   }
 

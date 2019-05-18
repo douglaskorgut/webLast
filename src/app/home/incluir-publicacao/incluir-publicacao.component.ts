@@ -34,6 +34,7 @@ export class IncluirPublicacaoComponent implements OnInit {
   }
 
   public publicar(): void {
+    
     this.bd.publicar({
       email: this.email ,
       titulo: this.formulario.value.titulo,

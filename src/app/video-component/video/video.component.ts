@@ -40,9 +40,9 @@ export class VideoComponent implements OnInit {
     })
   }
 
-
+  
   public publishVideo(email:string): void{
-    this._mqttService.publish("video/record","true").subscribe({
+    this._mqttService.publish("/tcciotutfpr/video/record","true").subscribe({
       next: () => {
           console.log("Video published")
       },
@@ -53,7 +53,7 @@ export class VideoComponent implements OnInit {
   }
 
   public publishEmail(email:string): void{
-    this._mqttService.publish("email",email).subscribe({
+    this._mqttService.publish("/tcciotutfpr/email",email).subscribe({
       next: () => {
           console.log("Email published")
       },

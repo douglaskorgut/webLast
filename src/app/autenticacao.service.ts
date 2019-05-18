@@ -7,6 +7,7 @@ import * as firebase from 'firebase'
 export class Autenticacao{
 
     public token_id: string 
+    public errorMessage: string
 
     constructor(private router: Router){ }
 
@@ -29,7 +30,7 @@ export class Autenticacao{
             })
     }
 
-    public autenticar(email: string, senha: string): void {
+    public autenticar(email: string, senha: string): string {
         firebase.auth().signInWithEmailAndPassword(email, senha)
             .then((resposta: any) => {
                 firebase.auth().currentUser.getIdToken()
@@ -39,7 +40,10 @@ export class Autenticacao{
                         this.router.navigate(['/home'])
                     })
             })
-            .catch((error: Error) => console.log(error))
+            .catch((error: Error) => { console.log(error)
+            this.errorMessage = error.toString()
+        })
+        return this.errorMessage
     }
 
     public autenticado(): boolean {

@@ -19,11 +19,19 @@
           />
           <input
             type="text"
-            placeholder="Título da foto do perfil"
+            placeholder="Nome do usuario a ser reconhecido"
             class="form-control"
             formControlName="titulo"
             style="margin-top:20px"
           >
+          <input
+          type="text"
+          placeholder="Id do usuário a ser reconhecido"
+          class="form-control"
+          formControlName="id"
+          style="margin-top:10px"
+        >
+        <p>{{bdMessage}}</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

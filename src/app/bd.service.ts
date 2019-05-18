@@ -2,10 +2,81 @@ import * as firebase from 'firebase'
 import  {Injectable} from '@angular/core'
 import { Progresso } from './progresso.service';
 import {DomSanitizer} from '@angular/platform-browser'
+import { resolve } from 'url';
 @Injectable()
 export class Bd{
 
+    public userIsOnDb: boolean
+    public counter: any
     constructor(private progresso: Progresso,  public sanitizer: DomSanitizer ){
+        
+    }
+
+    public checkForSameId(id:any):Promise<any>{
+        this.userIsOnDb = false
+        return firebase.database().ref('perfil_publicacoes/').once('value')
+            .then(function(users){
+                users.forEach(user =>{
+                    user.forEach(pic=>{
+                        if ( pic.val().id == id ){
+                            
+                        } else {
+                            
+                        }
+
+                    })
+                    // firebase.database().ref('perfil_publicacoes').child(user.key).once('value')
+                    //     .then(function(res){
+                    //         console.log(res.val())
+                    //     })
+
+                })
+            })
+    }
+
+    public descadastrarFace(picRef:string, userRef: string, faceId: any){
+        console.log("Descadastrar face")
+        firebase.database().ref('reiniciar_sistema').remove()
+        firebase.database().ref('perfil_publicacoes/'+userRef).once('value')
+            .then(function(resposta){
+                resposta.forEach(element => {
+                    firebase.database().ref('reiniciar_sistema/').push({'flag':faceId})
+                    firebase.database().ref('perfil_publicacoes/'+userRef).child(element.key).remove()
+                    firebase.storage().ref().child('perfil_images/'+element.key).delete()
+                   
+                });
+            })
+    }
+
+    public deletarPerfilCaptura(picRef:string, userRef: string){
+        firebase.database().ref('perfil_publicacoes/'+userRef).child(picRef).remove()
+        firebase.storage().ref().child('perfil_images/'+picRef).delete()
+    }
+
+    public deletarCaptura(picRef:string, userRef: string){
+        firebase.database().ref('publicacoes/'+userRef).child(picRef).remove()
+        firebase.storage().ref().child('imagens/'+picRef).delete()
+
+    }
+
+    public salvarCaptura(picRef:string,userRef:string) {
+
+        firebase.storage().ref().child('imagens/'+picRef).getDownloadURL().
+            then( function(url){
+                console.log(url)
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.onload = function(event) {
+                  var blob = xhr.response;
+                };
+                xhr.open('GET', url);
+                xhr.send();              
+            
+            }).catch((error: Error) => console.log(error))
+        }
+
+    public publicarUsuarioLogado(userLogged: string):void{
+        firebase.database().ref('last_user_logged').update({userLogged})
     }
 
     public publicar (publicacao: any): void {
@@ -38,10 +109,70 @@ export class Bd{
 
     }
 
+    public publicarGrupoReconhecimento (publicacao: any): void {
+
+        firebase.database().ref('grupo_reconhecimento/'+btoa(publicacao.email)+btoa(publicacao.titulo))
+        .push({ titulo: publicacao.titulo})
+            .then( (resposta:any) => {
+                let nomeImagem = resposta.key
+                    firebase.storage().ref()
+                .child("reconhecimento_thumb/"+nomeImagem)
+                    .put(publicacao.imagem)
+                    .on(firebase.storage.TaskEvent.STATE_CHANGED, 
+                        // Acompanhamento do progresso do upload
+                    (snapshot:any) =>{
+                        this.progresso.status = 'andamento'
+                        this.progresso.estado = snapshot
+                        //console.log('snapshot: ',snapshot)
+                    },
+                    (error) => {
+                        this.progresso.status = 'erro'
+                        //console.log(error)
+                    },
+                    () =>{
+                    // console.log('uploadCompleto')
+                        this.progresso.status = 'concluido'
+    
+                    }
+                )
+            })
+    
+        }
+
+    public publicarBuffer (publicacao: any): void {
+
+        firebase.database().ref('perfil_buffer/'+btoa(publicacao.email))
+        .push({ titulo: publicacao.titulo, id: publicacao.id})
+            .then( (resposta:any) => {
+                let nomeImagem = resposta.key
+                    firebase.storage().ref()
+                .child("perfil_buffer/"+nomeImagem)
+                    .put(publicacao.imagem)
+                    .on(firebase.storage.TaskEvent.STATE_CHANGED, 
+                        // Acompanhamento do progresso do upload
+                    (snapshot:any) =>{
+                        this.progresso.status = 'andamento'
+                        this.progresso.estado = snapshot
+                        //console.log('snapshot: ',snapshot)
+                    },
+                    (error) => {
+                        this.progresso.status = 'erro'
+                        //console.log(error)
+                    },
+                    () =>{
+                    // console.log('uploadCompleto')
+                        this.progresso.status = 'concluido'
+    
+                    }
+                )
+            })
+    
+        }
+
     public publicarPerfil (publicacao: any): void {
 
         firebase.database().ref('perfil_publicacoes/'+btoa(publicacao.email))
-        .push({ titulo: publicacao.titulo})
+        .push({ titulo: publicacao.titulo, id: publicacao.id})
             .then( (resposta:any) => {
                 let nomeImagem = resposta.key
                     firebase.storage().ref()
@@ -160,7 +291,6 @@ export class Bd{
     }
 
     public consultaPublicacoes(emailUsuario:string): Promise<any>{
-
 
         return new Promise ( (resolve,reject) =>{
 

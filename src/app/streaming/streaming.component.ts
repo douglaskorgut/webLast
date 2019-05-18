@@ -3,6 +3,7 @@ import {Autenticacao} from '../autenticacao.service'
 import { MqttService , IMqttMessage} from '../../../node_modules/ngx-mqtt';
 import {Bd} from '../bd.service'
 import * as firebase from 'firebase'
+import { Options, ChangeContext } from 'ng5-slider';
 
 @Component({
   selector: 'app-streaming',
@@ -14,8 +15,25 @@ export class StreamingComponent implements OnInit {
   private recordVideo: boolean = false
   private enableStreaming: boolean = false
   private email: string
+  private xValue: string = "50"
+  private yValue: string = "50"
+  
+  logXText: string = '';
+  logYText: string = '';
+  
+  private yOptions: Options = {
+    floor: 0,
+    ceil: 100
+  };
 
-  constructor(private autenticacao: Autenticacao,private bd: Bd, private _mqttService: MqttService) { }
+  private xOptions: Options = {
+    floor: 0,
+    ceil: 100
+  };
+
+  constructor(private autenticacao: Autenticacao,private bd: Bd, private _mqttService: MqttService) { 
+
+  }
 
   ngOnInit() {
 
@@ -28,11 +46,37 @@ export class StreamingComponent implements OnInit {
      })
   }
 
+  onYValueChange(changeContext: ChangeContext): void {
+
+    this.logYText = `${this.yValue}`
+    this._mqttService.publish("/tcciotutfpr/slider/y",this.logYText).subscribe({
+      next: () => {
+          console.log("X position published")
+      },
+      error: (error: Error) => {
+          console.log('X position not published')
+      }
+   });
+  }
+
+  onXValueChange(changeContext: ChangeContext): void {
+
+    this.logXText = `${this.xValue}`
+    this._mqttService.publish("/tcciotutfpr/slider/x",this.logXText).subscribe({
+      next: () => {
+          console.log("Y position published")
+      },
+      error: (error: Error) => {
+          console.log('Y position not published')
+      }
+   });
+  }
+
   public changeButtonState(): void{
     if ( this.recordVideo == false ) {
       this.recordVideo = true
       console.log("Record video = true")
-      this._mqttService.publish("/video/record","true").subscribe({
+      this._mqttService.publish("/tcciotutfpr/video/record","true").subscribe({
         next: () => {
             console.log("Video published")
         },
@@ -43,7 +87,7 @@ export class StreamingComponent implements OnInit {
     } else {
       this.recordVideo = false
       console.log("Record video = false")
-      this._mqttService.publish("/video/record","false").subscribe({
+      this._mqttService.publish("/tcciotutfpr/video/record","false").subscribe({
         next: () => {
             console.log("Video published")
         },
@@ -56,7 +100,7 @@ export class StreamingComponent implements OnInit {
 
 
   public takePicture():void{
-    this._mqttService.publish("/image/record","true").subscribe({
+    this._mqttService.publish("/tcciotutfpr/image/record","true").subscribe({
       next: () => {
           console.log("Image published")
       },
@@ -70,7 +114,7 @@ export class StreamingComponent implements OnInit {
     if ( this.enableStreaming == false ) {
       this.enableStreaming = true
       console.log("Record video = true")
-      this._mqttService.publish("streaming","true").subscribe({
+      this._mqttService.publish("/tcciotutfpr/streaming","true").subscribe({
         next: () => {
             console.log("Streaming published")
         },
@@ -81,7 +125,7 @@ export class StreamingComponent implements OnInit {
     } else {
       this.enableStreaming = false
       console.log("Record video = false")
-      this._mqttService.publish("streaming","false").subscribe({
+      this._mqttService.publish("/tcciotutfpr/streaming","false").subscribe({
         next: () => {
             console.log("Not streaming published")
         },
@@ -94,10 +138,11 @@ export class StreamingComponent implements OnInit {
 
   public sair(): void {
     this.autenticacao.sair()
+    this.bd.publicarUsuarioLogado("none")
   }
 
   public publishEmail(email:string): void{
-    this._mqttService.publish("email",email).subscribe({
+    this._mqttService.publish("/tcciotutfpr/email",email).subscribe({
       next: () => {
           console.log("Email published")
       },

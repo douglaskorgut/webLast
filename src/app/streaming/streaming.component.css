@@ -6,18 +6,11 @@
 }
 
 .logo {
-    background-image: url('/assets/logo.png');
+    background-image: url('/assets/Eye_of_Horus_Right.png');
     width: 165px;
     height: 70px;
-    background-repeat: no-repeat;
     float: left;
-}
-
-.add-post {
-    background-image: url('/assets/camera.png');
-    width: 32px;
-    height: 32px;
-    float: left;
+    background-repeat: no-repeat
 }
 .button{
     border: solid 1px #E6E6E6;

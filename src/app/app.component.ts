@@ -6,8 +6,6 @@ import { Subscription } from '../../node_modules/rxjs';
 
 
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,9 +23,6 @@ export class AppComponent implements OnInit {
     //   //console.log(this.message)
       
     // });
-
-
-    console.log("SUDPSUDOSAUDA")
   }
 
   ngOnInit(): void {

@@ -6,10 +6,11 @@
 }
 
 .logo {
-    background-image: url('/assets/logo-instagram-2.png');
-    width: 110px;
-    height: 36px;
+    background-image: url('/assets/Eye_of_Horus_Right.png');
+    width: 165px;
+    height: 150px;
     float: left;
+    background-repeat: no-repeat
 }
 
 .add-post {
