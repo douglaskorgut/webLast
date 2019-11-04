@@ -1,7 +1,7 @@
 import { Component, OnInit,  } from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser'
-import {Bd} from '../../bd.service'
-import * as firebase from 'firebase'
+import {DomSanitizer} from '@angular/platform-browser';
+import {Bd} from '../../bd.service';
+import * as firebase from 'firebase';
 import { MqttService , IMqttMessage} from '../../../../node_modules/ngx-mqtt';
 import { Subscription } from '../../../../node_modules/rxjs';
 
@@ -12,64 +12,59 @@ import { Subscription } from '../../../../node_modules/rxjs';
 })
 export class VideoComponent implements OnInit {
 
- 
-  private email: string
-  public publicacoes: any
+
+  private email: string;
+  public publicacoes: any;
 
 
   constructor(private bd: Bd, private _mqttService: MqttService, public sanitizer: DomSanitizer) {
     // SUBSCRIBING TO TOPICS
-   
+
     // this._mqttService.observe('topico/video/record').subscribe((message: IMqttMessage) => {
     //   this.message = message.payload.toString();
     // });
-   
+
   }
 
 
   ngOnInit() {
-    firebase.auth().onAuthStateChanged((user)=>{
-     this.email = user.email
-     
-     
-     this.atualizaVideoTimeline()
-    
-     this.publishEmail(btoa(this.email))
-
-
-    })
+    firebase.auth().onAuthStateChanged((user) => {
+     this.email = user.email;
+     this.atualizaVideoTimeline();
+     this.publishEmail(btoa(this.email));
+    });
   }
 
-  
-  public publishVideo(email:string): void{
-    this._mqttService.publish("/tcciotutfpr/video/record","true").subscribe({
+
+  public publishVideo(email: string): void {
+    this._mqttService.publish('/tcciotutfpr/video/record', 'true').subscribe({
       next: () => {
-          console.log("Video published")
+          console.log('Video published');
       },
       error: (error: Error) => {
-          console.log('Video not published')
+          console.log('Video not published');
       }
    });
   }
 
-  public publishEmail(email:string): void{
-    this._mqttService.publish("/tcciotutfpr/email",email).subscribe({
+  public publishEmail(email: string): void {
+    this._mqttService.publish('/tcciotutfpr/email', email).subscribe({
       next: () => {
-          console.log("Email published")
+          console.log('Email published');
       },
       error: (error: Error) => {
-          console.log('Email not published')
+          console.log('Email not published');
       }
    });
   }
 
-  public atualizaVideoTimeline(){
+  public atualizaVideoTimeline() {
     this.bd.consultaPublicacoesVideo(this.email)
-    .then( (publicacoes:any) =>{
-      this.publicacoes = publicacoes
-      
-    
-    } )
+    .then( (publicacoes: any) => {
+      this.publicacoes = publicacoes;
+
+
+    } );
   }
 
 }

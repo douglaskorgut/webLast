@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewChild} from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import {Autenticacao} from '../autenticacao.service'
 import { MqttService , IMqttMessage} from '../../../node_modules/ngx-mqtt';
 
@@ -23,7 +23,7 @@ export class PerfilComponent implements OnInit {
   }
 
   public doRecognition(): void{
-    this._mqttService.publish("/tcciotutfpr/recognition","true").subscribe({
+    this._mqttService.publish("horus/system/recognize","true").subscribe({
       next: () => {
           console.log("Do recognition")
       },
@@ -33,12 +33,12 @@ export class PerfilComponent implements OnInit {
    });
   }
 
-  public atualizarTimeLine(): void { 
+  public atualizarTimeLine(): void {
     this.publicacoesPerfil.test()
     //  this.publicacoesPerfil.atualizarTimeLine()
   }
 
-  
+
 
 
 }

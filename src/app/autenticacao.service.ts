@@ -1,33 +1,33 @@
-import { Injectable } from '@angular/core'
-import { Router } from '@angular/router'
-import { Usuario } from './acesso/usuario.model'
-import * as firebase from 'firebase'
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Usuario } from './acesso/usuario.model';
+import * as firebase from 'firebase';
 
 @Injectable()
-export class Autenticacao{
+export class Autenticacao {
 
-    public token_id: string 
-    public errorMessage: string
+    public token_id: string;
+    public errorMessage: string;
 
-    constructor(private router: Router){ }
+    constructor(private router: Router) { }
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         //console.log('Chegamos até o serviço: ', usuario)
 
         return firebase.auth().createUserWithEmailAndPassword(usuario.email, usuario.senha)
-            .then((resposta: any) => { 
+            .then((resposta: any) => {
 
                 //remover a senha do atributo senha do objeto usuário
-                delete usuario.senha
-                
+                delete usuario.senha;
+
                 //registrando dados complementares do usuário no path email na base64
                 firebase.database().ref(`usuario_detalhe/${btoa(usuario.email)}`)
-                    .set( usuario )
+                    .set( usuario );
 
             })
             .catch((error: Error) => {
-                console.log(error)
-            })
+                console.log(error);
+            });
     }
 
     public autenticar(email: string, senha: string): string {
@@ -35,33 +35,33 @@ export class Autenticacao{
             .then((resposta: any) => {
                 firebase.auth().currentUser.getIdToken()
                     .then((idToken: string) => {
-                        this.token_id = idToken
-                        localStorage.setItem('idToken', idToken)
-                        this.router.navigate(['/home'])
-                    })
+                        this.token_id = idToken;
+                        localStorage.setItem('idToken', idToken);
+                        this.router.navigate(['/home']);
+                    });
             })
-            .catch((error: Error) => { console.log(error)
-            this.errorMessage = error.toString()
-        })
-        return this.errorMessage
+            .catch((error: Error) => { console.log(error);
+            this.errorMessage = error.toString();
+        });
+        return this.errorMessage;
     }
 
     public autenticado(): boolean {
 
         if (this.token_id === undefined && localStorage.getItem('idToken') != null) {
-            this.token_id = localStorage.getItem('idToken')
+            this.token_id = localStorage.getItem('idToken');
         }
 
-        return this.token_id !== undefined
+        return this.token_id !== undefined;
     }
 
     public sair(): void {
 
         firebase.auth().signOut()
             .then(() => {
-                localStorage.removeItem('idToken')
-                this.token_id = undefined
-                this.router.navigate(['/'])
-            })
+                localStorage.removeItem('idToken');
+                this.token_id = undefined;
+                this.router.navigate(['/']);
+            });
     }
 }

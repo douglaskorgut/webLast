@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Autenticacao} from '../autenticacao.service'
+import {Autenticacao} from '../autenticacao.service';
 import { MqttService , IMqttMessage} from '../../../node_modules/ngx-mqtt';
-import {Bd} from '../bd.service'
-import * as firebase from 'firebase'
+import {Bd} from '../bd.service';
+import * as firebase from 'firebase';
 import { Options, ChangeContext } from 'ng5-slider';
 
 @Component({
@@ -12,15 +12,15 @@ import { Options, ChangeContext } from 'ng5-slider';
 })
 export class StreamingComponent implements OnInit {
 
-  private recordVideo: boolean = false
-  private enableStreaming: boolean = false
-  private email: string
-  private xValue: string = "50"
-  private yValue: string = "50"
-  
-  logXText: string = '';
-  logYText: string = '';
-  
+  private recordVideo = false;
+  private enableStreaming = false;
+  private email: string;
+  private xValue = '50';
+  private yValue = '50';
+
+  logXText = '';
+  logYText = '';
+
   private yOptions: Options = {
     floor: 0,
     ceil: 100
@@ -31,123 +31,123 @@ export class StreamingComponent implements OnInit {
     ceil: 100
   };
 
-  constructor(private autenticacao: Autenticacao,private bd: Bd, private _mqttService: MqttService) { 
+  constructor(private autenticacao: Autenticacao, private bd: Bd, private _mqttService: MqttService) {
 
   }
 
   ngOnInit() {
 
-    firebase.auth().onAuthStateChanged((user)=>{
-      this.email = user.email
-     
-      this.publishEmail(btoa(this.email))
- 
- 
-     })
+    firebase.auth().onAuthStateChanged((user) => {
+      this.email = user.email;
+
+      this.publishEmail(btoa(this.email));
+
+
+     });
   }
 
   onYValueChange(changeContext: ChangeContext): void {
 
-    this.logYText = `${this.yValue}`
-    this._mqttService.publish("/tcciotutfpr/slider/y",this.logYText).subscribe({
+    this.logYText = `${this.yValue}`;
+    this._mqttService.publish('/tcciotutfpr/slider/y', this.logYText).subscribe({
       next: () => {
-          console.log("X position published")
+          console.log('X position published');
       },
       error: (error: Error) => {
-          console.log('X position not published')
+          console.log('X position not published');
       }
    });
   }
 
   onXValueChange(changeContext: ChangeContext): void {
 
-    this.logXText = `${this.xValue}`
-    this._mqttService.publish("/tcciotutfpr/slider/x",this.logXText).subscribe({
+    this.logXText = `${this.xValue}`;
+    this._mqttService.publish('/tcciotutfpr/slider/x', this.logXText).subscribe({
       next: () => {
-          console.log("Y position published")
+          console.log('Y position published');
       },
       error: (error: Error) => {
-          console.log('Y position not published')
+          console.log('Y position not published');
       }
    });
   }
 
-  public changeButtonState(): void{
+  public changeButtonState(): void {
     if ( this.recordVideo == false ) {
-      this.recordVideo = true
-      console.log("Record video = true")
-      this._mqttService.publish("/tcciotutfpr/video/record","true").subscribe({
+      this.recordVideo = true;
+      console.log('Record video = true');
+      this._mqttService.publish('/tcciotutfpr/video/record', 'true').subscribe({
         next: () => {
-            console.log("Video published")
+            console.log('Video published');
         },
         error: (error: Error) => {
-            console.log('Video not published')
+            console.log('Video not published');
         }
      });
     } else {
-      this.recordVideo = false
-      console.log("Record video = false")
-      this._mqttService.publish("/tcciotutfpr/video/record","false").subscribe({
+      this.recordVideo = false;
+      console.log('Record video = false');
+      this._mqttService.publish('/tcciotutfpr/video/record', 'false').subscribe({
         next: () => {
-            console.log("Video published")
+            console.log('Video published');
         },
         error: (error: Error) => {
-            console.log('Video not published')
+            console.log('Video not published');
         }
      });
     }
   }
 
 
-  public takePicture():void{
-    this._mqttService.publish("/tcciotutfpr/image/record","true").subscribe({
+  public takePicture(): void {
+    this._mqttService.publish('/tcciotutfpr/image/record', 'true').subscribe({
       next: () => {
-          console.log("Image published")
+          console.log('Image published');
       },
       error: (error: Error) => {
-          console.log('Image not published')
+          console.log('Image not published');
       }
    });
   }
 
-  public changeStreamingState():void{
+  public changeStreamingState(): void {
     if ( this.enableStreaming == false ) {
-      this.enableStreaming = true
-      console.log("Record video = true")
-      this._mqttService.publish("/tcciotutfpr/streaming","true").subscribe({
+      this.enableStreaming = true;
+      console.log('Record video = true');
+      this._mqttService.publish('/tcciotutfpr/streaming', 'true').subscribe({
         next: () => {
-            console.log("Streaming published")
+            console.log('Streaming published');
         },
         error: (error: Error) => {
-            console.log('Streaming not published')
+            console.log('Streaming not published');
         }
      });
     } else {
-      this.enableStreaming = false
-      console.log("Record video = false")
-      this._mqttService.publish("/tcciotutfpr/streaming","false").subscribe({
+      this.enableStreaming = false;
+      console.log('Record video = false');
+      this._mqttService.publish('/tcciotutfpr/streaming', 'false').subscribe({
         next: () => {
-            console.log("Not streaming published")
+            console.log('Not streaming published');
         },
         error: (error: Error) => {
-            console.log('not streaming not published')
+            console.log('not streaming not published');
         }
      });
     }
   }
 
   public sair(): void {
-    this.autenticacao.sair()
-    this.bd.publicarUsuarioLogado("none")
+    this.autenticacao.sair();
+    this.bd.publicarUsuarioLogado('none');
   }
 
-  public publishEmail(email:string): void{
-    this._mqttService.publish("/tcciotutfpr/email",email).subscribe({
+  public publishEmail(email: string): void {
+    this._mqttService.publish('/tcciotutfpr/email', email).subscribe({
       next: () => {
-          console.log("Email published")
+          console.log('Email published');
       },
       error: (error: Error) => {
-          console.log('Email not published')
+          console.log('Email not published');
       }
    });
   }
