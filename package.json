@@ -30,7 +30,7 @@
     "context-menu-angular6": "0.0.6",
     "core-js": "^2.5.4",
     "firebase": "^5.11.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "mqtt": "^2.18.8",
     "ng-sidebar": "^8.0.0",
     "ng2-right-click-menu": "^1.1.0",
